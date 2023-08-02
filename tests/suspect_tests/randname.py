@@ -16,8 +16,8 @@ def generate_names (num = 10, style = None, gender = None):
 
     check_name_db()
 
-    for i in xrange(num):
-        print get_random_fullname(gender, style)
+    for i in range(num):
+        print(get_random_fullname(gender, style))
 
 if __name__ == "__main__":
     """

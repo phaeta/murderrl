@@ -37,8 +37,8 @@ class PathfindTest (object):
         Compares the counters for correct and incorrect pathfinding results
         and outputs the results.
         """
-        print "counter right: %s" % self.counter_right
-        print "counter wrong: %s" % self.counter_wrong
+        print("counter right: %s" % self.counter_right)
+        print("counter wrong: %s" % self.counter_wrong)
         return self.counter_wrong == 0
 
     def init_fgrid (self):
@@ -86,10 +86,10 @@ class PathfindTest (object):
         """
         result = pathfind.Pathfind(self.fgrid, start, stop).path_exists()
         if result:
-            print "A path between %s and %s exists." % (start, stop)
-            print pathfind.Pathfind(self.fgrid, start, stop).get_path()
+            print("A path between %s and %s exists." % (start, stop))
+            print(pathfind.Pathfind(self.fgrid, start, stop).get_path())
         else:
-            print "A path between %s and %s could not be found." % (start, stop)
+            print("A path between %s and %s could not be found." % (start, stop))
 
         if result == expected:
             self.counter_right += 1
@@ -98,6 +98,6 @@ class PathfindTest (object):
 
 if __name__ == "__main__":
     if PathfindTest().evaluate():
-        print "The pathfinding test was successful."
+        print("The pathfinding test was successful.")
     else:
-        print "There were errors in the pathfinding test."
+        print("There were errors in the pathfinding test.")

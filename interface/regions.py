@@ -293,7 +293,7 @@ class Template (object):
         self.name = name
         self.variables = variables
 
-        for name in variables.keys():
+        for name in list(variables.keys()):
             if hasattr(self, name):
                 raise TemplateError("Can't have variable named '%s', it's already an attribute of Template!" % name)
 
@@ -376,7 +376,7 @@ class TemplateRegion (Region):
           :method:`Template.name`. If the template is not found, or there are no
           named templates, this operation will always return None.
         """
-        if self.indexes.has_key(name):
+        if name in self.indexes:
             return self.indexes[name]
 
         return None

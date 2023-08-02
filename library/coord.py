@@ -22,8 +22,8 @@ class RectangleIterator (object):
 
         assert self.stop_point >= self.start_point
     def __iter__ (self):
-        for x in xrange(self.start_point.x, self.stop_point.x):
-            for y in xrange(self.start_point.y, self.stop_point.y):
+        for x in range(self.start_point.x, self.stop_point.x):
+            for y in range(self.start_point.y, self.stop_point.y):
                 yield Coord(x, y)
     def __repr__ (self):
         return "<RectangleIterator: %s to %s>" % (self.start_point, self.stop_point)
@@ -214,7 +214,7 @@ class Size (Coord):
         elif isinstance(width, Coord):
             width, height = width.as_tuple()
         elif not isinstance(width, int):
-            raise CoordError, "Can't use '%s' as a width." % width
+            raise CoordError("Can't use '%s' as a width." % width)
         Coord.__init__(self, width, height)
     def __repr__ (self):
         return "<Size width=%s height=%s>" % (self.width, self.height)
@@ -239,7 +239,7 @@ class AutoDimension (int):
     def __repr__ (self):
         return str(self)
     def __str__ (self):
-        return u"\u221e".encode("utf-8")
+        return "\u221e".encode("utf-8")
     __add__ = property(lambda self, other: self)
     __iadd__ = property(lambda self, other: self)
     __sub__ = property(lambda self, other: self)

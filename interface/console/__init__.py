@@ -70,7 +70,7 @@ Performs screen initialisation (by calling ``init``), then begins running the
 passed function. If it encounters an error, the screen is de-initialised (via
 ``deinit``), and then the error is re-raised.
 """
-import curse, win32
+from . import curse, win32
 
 __provides__ = curse, win32
 

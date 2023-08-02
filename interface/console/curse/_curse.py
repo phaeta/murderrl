@@ -67,9 +67,9 @@ class MoveError (Exception):
 def _goto (c, no_error=True):
     try:
         _STDSCREEN.move(c.y, c.x)
-    except _curses.error, e:
+    except _curses.error as e:
         if not no_error:
-            raise MoveError, (e, c.x, c.y)
+            raise MoveError(e, c.x, c.y)
 
 def put (char, c, col=None):
     assert isinstance(char, int) or len(char) == 1
@@ -127,14 +127,14 @@ def clear (char=None, colour=None):
     if char is None:
         char = " "
 
-    for y in xrange(termsize.width):
-        for x in xrange(termsize.height):
+    for y in range(termsize.width):
+        for x in range(termsize.height):
             put (char, coord.Coord(x, y), colour)
 
 def _init_colours ():
     pair = 0
-    for bg in xrange(8):
-        for fg in xrange(8):
+    for bg in range(8):
+        for fg in range(8):
             if (fg > 0) or (bg > 0):
                 pair = bg * 8 + fg
                 curses.init_pair(pair, fg, bg);

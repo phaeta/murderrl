@@ -140,8 +140,8 @@ class Game (object):
         rprops = m.room_props
 
         # Try up to 5 times to assign alibis to each of the suspects.
-        for i in xrange(5):
-            print "%s. attempt at setting alibis" % (i+1)
+        for i in range(5):
+            print("%s. attempt at setting alibis" % (i+1))
 
             # Reset alibis.
             for s in sl.suspects:
@@ -153,20 +153,20 @@ class Game (object):
             # First, pick the murder room (stored as victim's "alibi").
             r = self.add_alibi_for_suspect(sl.victim, rids)
             if r == None:
-                print "Found no murder room! Exit early."
+                print("Found no murder room! Exit early.")
                 return False
 
-            print "Murder room: %s (%s, Victim: %s)" % (rprops[r].name, r, sl.get_victim().get_name())
+            print("Murder room: %s (%s, Victim: %s)" % (rprops[r].name, r, sl.get_victim().get_name()))
             rids.remove(r)
             for adj in rprops[r].adj_rooms:
                 if rprops[adj].is_corridor:
                     continue
-                print "block adjoining room %s (%s)" % (rprops[adj].name, adj)
+                print("block adjoining room %s (%s)" % (rprops[adj].name, adj))
                 rids.remove(adj)
 
             r = self.add_alibi_for_suspect(sl.murderer, rids)
             if r != None:
-                print "Alibi room for murderer: %s (%s, %s)" % (rprops[r].name, r, sl.get_murderer().get_name())
+                print("Alibi room for murderer: %s (%s, %s)" % (rprops[r].name, r, sl.get_murderer().get_name()))
                 if sl.murderer in rprops[r].owners:
                     rname = "my bedroom"
                 else:
@@ -174,19 +174,19 @@ class Game (object):
                 sl.get_murderer().set_alibi(r, rname)
                 rids.remove(r)
             else:
-                print "Found no alibi room for murderer (%s)" % sl.get_murderer().get_name()
+                print("Found no alibi room for murderer (%s)" % sl.get_murderer().get_name())
                 continue
             murderer_room = r
 
             # Suspects that don't have an alibi yet.
-            sids = range(0, sl.no_of_suspects())
+            sids = list(range(0, sl.no_of_suspects()))
             sids.remove(sl.victim)
             sids.remove(sl.murderer)
 
             N = len(sids)
-            PAIRS = max(1, random.randint((N+1)/5, (N+1)/3))
+            PAIRS = max(1, random.randint((N+1)//5, (N+1)//3))
             need_reroll = False
-            for i in xrange(0, PAIRS):
+            for i in range(0, PAIRS):
                 idx1 = random.choice(sids)
                 sids.remove(idx1)
                 p1 = sl.get_suspect(idx1)
@@ -202,7 +202,7 @@ class Game (object):
                         r = m.pick_room_for_suspect(rids, idx1, idx2)
                         if r == None:
                             return False
-                        print "%s (%s) for %s and %s" % (rprops[r].name, r, sl.get_suspect(idx1).get_name(), sl.get_suspect(idx2).get_name())
+                        print("%s (%s) for %s and %s" % (rprops[r].name, r, sl.get_suspect(idx1).get_name(), sl.get_suspect(idx2).get_name()))
                         sl.create_paired_alibi(idx1, idx2, r, rprops[r])
                         rids.remove(r)
                         continue
@@ -211,11 +211,11 @@ class Game (object):
                 sids.remove(idx2)
                 r = m.pick_room_for_suspect(rids, idx1, idx2)
                 if r != None:
-                    print "%s (%s) for %s and %s" % (rprops[r].name, r, sl.get_suspect(idx1).get_name(), sl.get_suspect(idx2).get_name())
+                    print("%s (%s) for %s and %s" % (rprops[r].name, r, sl.get_suspect(idx1).get_name(), sl.get_suspect(idx2).get_name()))
                     rids.remove(r)
                     sl.create_paired_alibi(idx1, idx2, r, rprops[r])
                 else:
-                    print "Found no alibi room for %s and %s" % (sl.get_suspect(idx1).get_name(), sl.get_suspect(idx2).get_name())
+                    print("Found no alibi room for %s and %s" % (sl.get_suspect(idx1).get_name(), sl.get_suspect(idx2).get_name()))
                     need_reroll = True
                     break
 
@@ -229,7 +229,7 @@ class Game (object):
             for s in sids:
                 r = self.add_alibi_for_suspect(s, rids)
                 if r != None:
-                    print "%s (%s) for %s" % (rprops[r].name, r, sl.get_suspect(s).get_name())
+                    print("%s (%s) for %s" % (rprops[r].name, r, sl.get_suspect(s).get_name()))
                     rids.remove(r)
                     if s in rprops[r].owners:
                         rname = "my bedroom"
@@ -237,7 +237,7 @@ class Game (object):
                         rname = rprops[r].room_name(True)
                     sl.get_suspect(s).set_alibi(r, rname)
                 else:
-                    print "Found no alibi room for %s" % sl.get_suspect(s).get_name()
+                    print("Found no alibi room for %s" % sl.get_suspect(s).get_name())
                     need_reroll = True
                     break
 
@@ -264,7 +264,7 @@ class Game (object):
                 name = "The murderer (%s)" % s.get_name()
             else:
                 name = "%s" % s.get_name()
-            print "%s is heading for %s." % (name, rp.room_name(True))
+            print("%s is heading for %s." % (name, rp.room_name(True)))
 
     def init_suspect_positions (self):
         """
@@ -273,7 +273,7 @@ class Game (object):
         """
         sl = self.suspect_list
         rooms = []
-        for s in xrange(sl.no_of_suspects()):
+        for s in range(sl.no_of_suspects()):
             rooms.append(None)
 
         manor = self.base_manor
@@ -281,7 +281,7 @@ class Game (object):
             for i in manor.room_props[r].owners:
                 rooms[i] = r
 
-        for i in xrange(sl.no_of_suspects()):
+        for i in range(sl.no_of_suspects()):
             if i == sl.victim:
                 continue
 
@@ -438,7 +438,7 @@ class Game (object):
         Draws all suspects at their current position onto the screen.
         """
         sl = self.suspect_list
-        for i in xrange(len(sl.suspects)):
+        for i in range(len(sl.suspects)):
             if sl.victim == i:
                 continue
             p = sl.get_suspect(i)
@@ -593,7 +593,7 @@ class Game (object):
         persons = []
         curr_room = self.get_current_room()
         sl = self.suspect_list
-        for sid in xrange(sl.no_of_suspects()):
+        for sid in range(sl.no_of_suspects()):
             if sid == sl.victim:
                 continue
             p = sl.get_suspect(sid)
@@ -693,7 +693,7 @@ class Game (object):
         candidates = []
         sl = self.suspect_list
         rm = self.get_current_room_id()
-        for idx in xrange(sl.no_of_suspects()):
+        for idx in range(sl.no_of_suspects()):
             if idx == sl.victim:
                 continue
 
@@ -735,7 +735,7 @@ class Game (object):
         m.add_entry(e)
 
         # Sort the list by name.
-        list = range(0, sl.no_of_suspects())
+        list = list(range(0, sl.no_of_suspects()))
         list.sort(cmp=lambda a, b: cmp(sl.get_suspect(a).first, sl.get_suspect(b).first))
         for i in list:
             if not sl.is_victim(i):
@@ -751,7 +751,7 @@ class Game (object):
         m = menu.Menu("Accuse whom?", False)
         sl = self.suspect_list
         # Sort the list by name.
-        list = range(0, sl.no_of_suspects())
+        list = list(range(0, sl.no_of_suspects()))
         list.sort(cmp=lambda a, b: cmp(sl.get_suspect(a).first, sl.get_suspect(b).first))
         for i in list:
             if not sl.is_victim(i):
@@ -954,7 +954,7 @@ class Game (object):
                        s.duration = 500
                 else:
                     room_name = rp.room_name(True)
-                print "%s has reached %s." % (s.get_name(), room_name)
+                print("%s has reached %s." % (s.get_name(), room_name))
         else:
             valid_moves = []
             for pos in AdjacencyIterator(s.pos):
@@ -988,7 +988,7 @@ class Game (object):
         """
         sl    = self.suspect_list
         manor = self.base_manor
-        for i in xrange(len(sl.suspects)):
+        for i in range(len(sl.suspects)):
             if sl.victim == i:
                 continue
 

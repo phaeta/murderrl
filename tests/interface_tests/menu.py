@@ -18,7 +18,7 @@ def get_rooms (num = 10):
     #       this should eventually draw on the manor's room list.
     rooms = []
     dbr   = db.get_database("rooms")
-    for i in xrange(num):
+    for i in range(num):
         new_room = dbr.random_pop()
         if (new_room):
             new_room = "the %s" % new_room.name
@@ -50,14 +50,14 @@ def main (num = 10, sorted = True):
 
         # Construct a list of (index, first name) tuples.
         name_list = []
-        for i in xrange(sl.no_of_suspects()):
+        for i in range(sl.no_of_suspects()):
             name_list.append((i, sl.get_suspect(i).first))
 
         # Sort the list by name.
         name_list.sort(key=lambda person: person[1])
 
-        total_suspects = xrange(len(sl.suspects))
-        for i in xrange(sl.no_of_suspects()):
+        total_suspects = range(len(sl.suspects))
+        for i in range(sl.no_of_suspects()):
             idx = name_list[i][0]
             sl.get_suspect(idx).have_seen = True
             if not sl.is_victim(idx):
@@ -69,7 +69,7 @@ def main (num = 10, sorted = True):
         e = Entry('x', "Victim: " + str(sl.get_victim()),
                   sl.describe_suspect, sl.victim, 'v', colour=Colours.BROWN)
         m.add_entry(e)
-        total_suspects = xrange(len(sl.suspects))
+        total_suspects = range(len(sl.suspects))
         for i in total_suspects:
             sl.get_suspect(i).have_seen = True
             if not sl.is_victim(i):

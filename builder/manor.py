@@ -19,7 +19,9 @@ Attempt to create a "manor" akin to::
 
 """
 
-import random, builder, room
+#import random, builder, room
+import random
+from . import builder, room
 from interface.features import *
 from library.coord import *
 from library.random_util import *
@@ -36,7 +38,7 @@ class ManorCollection (builder.BuilderCollection):
         and size of each corridor within the manor.
         """
         for idx in self.corridors:
-            print "Corridor %s: %s" % (idx, self.corridor(idx))
+            print("Corridor %s: %s" % (idx, self.corridor(idx)))
 
     def get_corridor_index (self, pos, single = True):
         """
@@ -77,7 +79,7 @@ class ManorCollection (builder.BuilderCollection):
         and size of each room within the manor.
         """
         for idx in self.rooms:
-            print "Room %s: %s" % (idx, self.get_room(idx))
+            print("Room %s: %s" % (idx, self.get_room(idx)))
 
     def get_room_index (self, pos, single = True):
         """
@@ -148,9 +150,9 @@ class ManorCollection (builder.BuilderCollection):
         start = corr.pos()
         stop  = start + coord.Coord(corr.width(), corr.height())
         m_end = self.size()
-        print "corridor %s" % idx
-        print "start=(%s), stop=(%s)" % (start, stop)
-        print "manor size=(%s), 1/4 -> (%s), 3/4 -> (%s)" % (m_end, coord.Coord(m_end.x/4, m_end.y/4), coord.Coord(3*m_end.x/4, 3*m_end.y/4))
+        print("corridor %s" % idx)
+        print("start=(%s), stop=(%s)" % (start, stop))
+        print("manor size=(%s), 1/4 -> (%s), 3/4 -> (%s)" % (m_end, coord.Coord(m_end.x/4, m_end.y/4), coord.Coord(3*m_end.x/4, 3*m_end.y/4)))
 
         dir_horizontal = ""
         if start.y < max(5, m_end.y/4):
@@ -244,8 +246,8 @@ class ManorCollection (builder.BuilderCollection):
         self.init_room_properties()
         self.features = FeatureGrid(self.size().x, self.size().y)
 
-        print "Manor size: %s" % self.size()
-        print "Feature size: %s" % self.features.size()
+        print("Manor size: %s" % self.size())
+        print("Feature size: %s" % self.features.size())
 
         # Iterate over all rooms and corridors, and mark positions within
         # them as floor, and their boundaries as walls.
@@ -319,7 +321,7 @@ class ManorCollection (builder.BuilderCollection):
         :``pos``: A coordinate within the manor. *Required*.
         """
         if pos < DIR_NOWHERE or pos >= self.size():
-            print "Invalid coord %s in manor of size %s" % (pos, self.size())
+            print("Invalid coord %s in manor of size %s" % (pos, self.size()))
             return NOTHING
 
         return self.features.__getitem__(pos)
@@ -332,7 +334,7 @@ class ManorCollection (builder.BuilderCollection):
         :``feat``: The feature to set. *Required*.
         """
         if pos < DIR_NOWHERE or pos >= self.size():
-            print "Invalid coord %s in manor of size %s" % (pos, self.size())
+            print("Invalid coord %s in manor of size %s" % (pos, self.size()))
             return NOTHING
 
         return self.features.__setitem__(pos, feat)
@@ -412,7 +414,7 @@ class ManorCollection (builder.BuilderCollection):
                 self.room_props[old_room].add_adjoining_room(corrs[0])
                 self.room_props[corrs[0]].add_adjoining_room(old_room)
             else:
-                print "no corridor matching doorpos %s of room %s" % (rand_coord, old_room)
+                print("no corridor matching doorpos %s of room %s" % (rand_coord, old_room))
 
     def add_doors (self):
         """
@@ -470,7 +472,7 @@ class ManorCollection (builder.BuilderCollection):
                     break
             if corr == None:
                 continue
-            print "Change door pos (%s) to a wall" % door_pos
+            print("Change door pos (%s) to a wall" % door_pos)
             self.features.__setitem__(door_pos, WALL)
             # Update the adjoining rooms of both room and corridor.
             rp.adj_rooms.remove(corr)
@@ -500,14 +502,14 @@ class ManorCollection (builder.BuilderCollection):
 
         door_pos = random.choice(candidates)
         rooms = self.get_room_indices(door_pos)
-        print "door_pos (%s) of rooms %s" % (door_pos, rooms)
-        for i1 in xrange(len(rooms)):
+        print("door_pos (%s) of rooms %s" % (door_pos, rooms))
+        for i1 in range(len(rooms)):
             r1 = rooms[i1]
-            for i2 in xrange(i1+1, len(rooms)):
+            for i2 in range(i1+1, len(rooms)):
                 r2 = rooms[i2]
                 rp1 = self.room_props[r1]
                 rp2 = self.room_props[r2]
-                print "connect rooms %s and %s" % (rp1.name, rp2.name)
+                print("connect rooms %s and %s" % (rp1.name, rp2.name))
                 rp1.add_adjoining_room(r2)
                 rp2.add_adjoining_room(r1)
 
@@ -590,7 +592,7 @@ class ManorCollection (builder.BuilderCollection):
         # For full windows, there's a chance of making them smaller
         # and placing them slightly off-center.
         if full_window and one_chance_in(3):
-            shift = random.randint(1, max(1,length/3))
+            shift = random.randint(1, max(1,length//3))
             if window == WINDOW_H:
                 if coinflip():
                     start.x += shift
@@ -616,7 +618,7 @@ class ManorCollection (builder.BuilderCollection):
             curr  = self.get_room(r)
             start = curr.pos()
             stop  = start + curr.size()
-            print "Room %s: %s" % (r, curr)
+            print("Room %s: %s" % (r, curr))
 
             # left-side vertical windows
             if start.x == 0:
@@ -675,7 +677,7 @@ class ManorCollection (builder.BuilderCollection):
             curr  = self.get_room(r)
             start = curr.pos()
             stop  = start + curr.size()
-            print "Room %s: %s" % (r, curr)
+            print("Room %s: %s" % (r, curr))
 
             door_candidates = []
             rp = self.room_props[r]
@@ -699,7 +701,7 @@ class ManorCollection (builder.BuilderCollection):
             # all rooms are fully connected, but does mean that some
             # rooms get 2-3 doors.
             for d in door_candidates:
-                print "==> add door at pos %s" % d
+                print("==> add door at pos %s" % d)
                 self.set_feature(d, OPEN_DOOR)
                 self.doors.append(d)
 
@@ -730,7 +732,7 @@ class ManorCollection (builder.BuilderCollection):
                 # print "adjacent room %s already filled" % arp.name
                 continue
 
-            print "fill room %s from database" % adj
+            print("fill room %s from database" % adj)
             if arp.fill_from_database(utility):
                 self.assign_adjacent_rooms(adj)
 
@@ -782,7 +784,7 @@ class ManorCollection (builder.BuilderCollection):
         # are many suspects. (jpeg)
         max_no_bedrooms = len(self.rooms) - 7
         count_bedrooms  = 0
-        print "-------\nallow for max. %s bedrooms" % max_no_bedrooms
+        print("-------\nallow for max. %s bedrooms" % max_no_bedrooms)
 
         corrs = self.corridors[:]
         if len(corrs) > 1:
@@ -796,7 +798,7 @@ class ManorCollection (builder.BuilderCollection):
                     section = "bedrooms"
                 else:
                     section = "domestic"
-                print "-------\nCorridor %s is marked as %s" % (c, section)
+                print("-------\nCorridor %s is marked as %s" % (c, section))
                 corrprop = self.room_props[c]
                 rooms = corrprop.adj_rooms[:]
                 random.shuffle(rooms)
@@ -843,10 +845,10 @@ class ManorCollection (builder.BuilderCollection):
         rp = self.room_props[self.entrance_hall]
         rp.name = "entrance hall"
         rp.has_data = True
-        print "-------\nentrance hall: room %s" % self.entrance_hall
+        print("-------\nentrance hall: room %s" % self.entrance_hall)
 
         if len(owner_list) > 0:
-            print "-------\nremaining rooms - allow for max. %s bedrooms" % (max_no_bedrooms - count_bedrooms)
+            print("-------\nremaining rooms - allow for max. %s bedrooms" % (max_no_bedrooms - count_bedrooms))
             rooms = self.rooms[:]
             random.shuffle(rooms)
             for r in rooms:
@@ -865,7 +867,7 @@ class ManorCollection (builder.BuilderCollection):
                         count_bedrooms += 1
                         self.assign_adjacent_rooms(r)
 
-        print "-------\nassign remaining rooms"
+        print("-------\nassign remaining rooms")
         rooms = self.rooms[:]
         random.shuffle(rooms)
         for r in rooms:
@@ -1080,10 +1082,10 @@ class ManorCollection (builder.BuilderCollection):
             furniture_list.append(feat)
             if how_many > 1:
                 if how_many == 3:
-                    for i in xrange(2):
+                    for i in range(2):
                         furniture_list.append(feat)
                 # additional chances of placing more
-                for i in xrange(5):
+                for i in range(5):
                     if one_chance_in(3):
                         furniture_list.append(feat)
 
@@ -1130,7 +1132,7 @@ class ManorCollection (builder.BuilderCollection):
             width  = height
             height = tmp
 
-        print "table width=%s, height=%s, room size: (%s), section: (%s)" % (width, height, rm.size(), stop - start)
+        print("table width=%s, height=%s, room size: (%s), section: (%s)" % (width, height, rm.size(), stop - start))
         if width > stop.x - start.x:
             width = stop.x - start.x
         if height > stop.y - start.y:
@@ -1206,14 +1208,14 @@ class ManorCollection (builder.BuilderCollection):
         if north_trav and south_trav:
             found = pathfind.Pathfind(self.features, north, south, None, self.stays_in_room).path_exists()
             if not found:
-                print "pos (%s) blocks N/S path" % pos
+                print("pos (%s) blocks N/S path" % pos)
         if found:
             east_trav = self.get_feature(east).traversable()
             west_trav = self.get_feature(west).traversable()
             if east_trav and west_trav:
                 found = pathfind.Pathfind(self.features, east, west, None, self.stays_in_room).path_exists()
                 if not found:
-                    print "pos (%s) blocks E/W path" % pos
+                    print("pos (%s) blocks E/W path" % pos)
             if found and north_trav != south_trav and east_trav != west_trav:
                 if north_trav:
                     if east_trav:
@@ -1226,7 +1228,7 @@ class ManorCollection (builder.BuilderCollection):
                     else:
                         found = pathfind.Pathfind(self.features, south, west, None, self.stays_in_room).path_exists()
                 if not found:
-                    print "pos (%s) blocks diagonal path" % pos
+                    print("pos (%s) blocks diagonal path" % pos)
 
         # Reset to original feature.
         self.features.__setitem__(pos, old_feat)
@@ -1245,7 +1247,7 @@ class ManorCollection (builder.BuilderCollection):
             if len(candidates) == 0:
                 break
 
-            print "Trying to place %s in %s" % (feat.name(), rp.name)
+            print("Trying to place %s in %s" % (feat.name(), rp.name))
             while tries > 0:
                 # For restrictions, only a chance of reducing the counter.
                 reduce_tries = True

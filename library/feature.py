@@ -123,9 +123,9 @@ class FeatureGrid (object):
         self.grid = []
         self._width  = width
         self._height = height
-        for row in xrange(height):
+        for row in range(height):
             row = []
-            for column in xrange(width):
+            for column in range(width):
                 row.append(feat)
             self.grid.append(row)
 
@@ -163,9 +163,9 @@ class FeatureGrid (object):
         Prints the feature glyphs onto the screen. Debugging method.
         """
         canvas = []
-        for x in xrange(self._height):
+        for x in range(self._height):
             row = []
-            for y in xrange(self._width):
+            for y in range(self._width):
                 glyph = self.__getitem__(coord.Coord(y, x)).glyph()
                 row.append(glyph)
-            print ''.join(row)
+            print(''.join(row))

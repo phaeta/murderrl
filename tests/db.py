@@ -37,19 +37,19 @@ def get_room_from_database (try_strict, type = "utility"):
             new_room = dbr.random_pop(alphabetic_check)
 
         if new_room == None:
-            print "None found -> relax the requirements:",
+            print("None found -> relax the requirements:", end=' ')
             get_room_from_database(False)
             return False
     else:
         new_room = dbr.random_pop()
 
-    print new_room.name
+    print(new_room.name)
     return try_strict
         
 def main (type):
-    print "Rooms matching the '%s' criterion:" % type
+    print("Rooms matching the '%s' criterion:" % type)
     try_strict = True
-    for i in xrange(10):
+    for i in range(10):
         try_strict = get_room_from_database(try_strict, type)
 
 if __name__ == "__main__":

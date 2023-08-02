@@ -12,8 +12,8 @@ classes.
 
 """
 
-import coord
-import collection
+from . import coord
+from . import collection
 import warnings
 
 def iterable (obj):
@@ -261,7 +261,7 @@ class Shape (object):
                 elif isinstance(args[0], int):
                     width = args[0]
                 else:
-                    raise ShapeError, "Unexpected type '%s' for argument 1 of Shape::__init__. Expected iterable or int." % type(args[0])
+                    raise ShapeError("Unexpected type '%s' for argument 1 of Shape::__init__. Expected iterable or int." % type(args[0]))
 
             # Must be width or height (can't have a fill for 0*0 shapes)
             if len(args) >= 2:
@@ -271,7 +271,7 @@ class Shape (object):
                     else:
                         height = args[1]
                 else:
-                    raise ShapeError, "Unexpected type '%s' for argument 2 of Shape::__init__. Expected iterable or int." % type(args[1])
+                    raise ShapeError("Unexpected type '%s' for argument 2 of Shape::__init__. Expected iterable or int." % type(args[1]))
 
             # Must be height or fll.
             if len(args) >= 3:
@@ -285,16 +285,16 @@ class Shape (object):
                 fill = args[3]
 
             if fill is not None and len(fill) != 1:
-                raise ShapeError, "Unexpected size %s for argument 'fill' of Shape::__init__. Expect None or single character, got '%s'." % (len(fill), fill)
+                raise ShapeError("Unexpected size %s for argument 'fill' of Shape::__init__. Expect None or single character, got '%s'." % (len(fill), fill))
 
             if len(args) >= 4 and sh_list is None:
-                raise ShapeError, "Unexpected arguments for Shape::__init__: '%s'." % (', '.join([str(x) for x in args[3:]]))
+                raise ShapeError("Unexpected arguments for Shape::__init__: '%s'." % (', '.join([str(x) for x in args[3:]])))
 
         self._canvas = []
         if not sh_list:
-            for row in xrange(height):
+            for row in range(height):
                 row = []
-                for columnn in xrange(width):
+                for columnn in range(width):
                     row.append(fill)
                 self._canvas.append(row)
         else:
@@ -377,7 +377,7 @@ class Shape (object):
                 return self._canvas[row][column]
             __getitem__.__doc__ = _ShapeColumn.__getitem__.__doc__
             def __iter__ (s):
-                for i in xrange(self.height()):
+                for i in range(self.height()):
                     yield (coord.Coord(column, i), self._canvas[i][column])
             __iter__.__doc__ = _ShapeColumn.__iter__.__doc__
 
@@ -412,7 +412,7 @@ class Shape (object):
             def __getitem__ (s, column):
                 return self._canvas[row][column]
             def __iter__ (s):
-                for i in xrange(len(self._canvas[row])):
+                for i in range(len(self._canvas[row])):
                     return (coord.Coord(i, row), self._canvas[row][i])
 
         return ShapeRow()
@@ -435,13 +435,13 @@ class Shape (object):
         assert height is None or isinstance(height, int)
 
         if width is not None and width < self.width():
-            raise ShapeError, "can't normalise to less than maximum width."
+            raise ShapeError("can't normalise to less than maximum width.")
 
         if height is not None and height < self.height():
-            raise ShapeError, "can't normalise to less than maximum height."
+            raise ShapeError("can't normalise to less than maximum height.")
 
         if fill is not None and len(fill) != 1:
-            raise ShapeError, "can't normalise with character '%s'." % fill
+            raise ShapeError("can't normalise with character '%s'." % fill)
 
         if width == None and height == None:
             return
@@ -450,7 +450,7 @@ class Shape (object):
             self._canvas = [[]]
 
         if width:
-            for i in xrange(len(self._canvas)):
+            for i in range(len(self._canvas)):
                 while len(self._canvas[i]) < width:
                     self._canvas[i].append(fill)
         if height:
@@ -490,7 +490,7 @@ class Shape (object):
                 pop = 0
             else:
                 pop = -1
-            for i in xrange(len(self._canvas)):
+            for i in range(len(self._canvas)):
                 while len(self._canvas[i]) > width:
                     self._canvas[i].pop(pop)
 
@@ -526,7 +526,7 @@ class Shape (object):
             self._canvas = [[]]
 
         if num_cols:
-            for i in xrange(len(self._canvas)):
+            for i in range(len(self._canvas)):
                 while len(self._canvas[i]) < num_cols:
                     self._canvas[i].insert(0, fill)
         if num_rows:
@@ -565,7 +565,7 @@ class Shape (object):
             nxy = xy+offset
             if check_conflict and self[nxy] != None:
                 if conflict_error:
-                    raise ShapeError, "Tried to blit foreign '%s' onto '%s' at %s!" % (char, self[nxy], nxy)
+                    raise ShapeError("Tried to blit foreign '%s' onto '%s' at %s!" % (char, self[nxy], nxy))
                 else:
                     continue
             self[nxy] = char
@@ -618,8 +618,8 @@ class Shape (object):
         Provide an iterator that returns (Coord(x, y), self[x][y]) for each
         glyph within the Shape.
         """
-        for rownum in xrange(len(self._canvas)):
-            for colnum in xrange(len(self._canvas[rownum])):
+        for rownum in range(len(self._canvas)):
+            for colnum in range(len(self._canvas[rownum])):
                 yield (coord.Coord(colnum, rownum), self._canvas[rownum][colnum])
 
     def __getitem__ (self, item):
@@ -634,7 +634,7 @@ class Shape (object):
         if isinstance(item, coord.Coord):
             return self._canvas[item.y][item.x]
         elif isinstance(item, slice):
-            raise Exception, "Do not slice Shape!"
+            raise Exception("Do not slice Shape!")
         else:
             return self.column(item)
 
@@ -656,14 +656,14 @@ class Shape (object):
         if isinstance(item, coord.Coord):
             self._canvas[item.y][item.x] = value
         elif isinstance(item, slice):
-            raise ShapeError, "Cannot slice Shape!"
+            raise ShapeError("Cannot slice Shape!")
         elif isinstance(item, int):
             if isinstance(value, list):
                 value = Column(value)
             elif isinstance(value, Shape):
                 value = Column(value)
             else:
-                raise ShapeError, "Invalid type '%s' for assignation to %s." % (type(value), item)
+                raise ShapeError("Invalid type '%s' for assignation to %s." % (type(value), item))
             self.draw_on(value, coord.Coord(item, 0), False, False)
 
     def __len__ (self):
@@ -852,19 +852,19 @@ class Box (Shape):
         w, h = self.size()
 
         # Top section.
-        for x in xrange(w):
-            for y in xrange(self.border):
+        for x in range(w):
+            for y in range(self.border):
                 yield coord.Coord(x, y)
 
         # Sides!
-        for x in xrange(self.border):
-            for y in xrange(self.border, h-self.border):
+        for x in range(self.border):
+            for y in range(self.border, h-self.border):
                 yield coord.Coord(x, y)
                 yield coord.Coord(w-x-1, y)
 
         # Bottom section
-        for x in xrange(w):
-            for y in xrange(h-self.border, h):
+        for x in range(w):
+            for y in range(h-self.border, h):
                 yield coord.Coord(x, y)
 
 class Column (Shape):

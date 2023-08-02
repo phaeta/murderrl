@@ -16,7 +16,7 @@ def get_rooms (num = 10):
     #       this should eventually draw on the manor's room list.
     rooms = []
     dbr   = db.get_database("rooms")
-    for i in xrange(num):
+    for i in range(num):
         new_room = dbr.random_pop()
         if (new_room):
             new_room = new_room.name
@@ -24,7 +24,7 @@ def get_rooms (num = 10):
             new_room = "nowhere"
         rooms.append(new_room)
 
-    print rooms
+    print(rooms)
     return rooms
 
 def print_mystery (num = 10):
@@ -37,17 +37,17 @@ def print_mystery (num = 10):
     rooms = get_rooms(num)
     sl    = SuspectList(num, rooms)
 
-    print "The victim: %s, %s" % (sl.get_victim().get_name(),
-                                  sl.get_victim().describe_hair())
+    print("The victim: %s, %s" % (sl.get_victim().get_name(),
+                                  sl.get_victim().describe_hair()))
 
-    total_suspects = range(len(sl.suspects))
+    total_suspects = list(range(len(sl.suspects)))
     total_suspects.remove(sl.victim)
     print_header("All suspects");
     for i in total_suspects:
         p = sl.get_suspect(i)
-        print "%s, %s" % (p.get_name(), p.describe_hair())
+        print("%s, %s" % (p.get_name(), p.describe_hair()))
 
-    print "\nThe clue: a %s hair!" % sl.get_murderer().hair
+    print("\nThe clue: a %s hair!" % sl.get_murderer().hair)
 
     confirmed   = sl.get_cleared_suspects()
     print_header("Confirmed alibis");
@@ -57,7 +57,7 @@ def print_mystery (num = 10):
     print_header("Unconfirmed alibis");
     sl.print_alibis(unconfirmed)
 
-    print "\nThe murderer:", sl.get_murderer().get_name()
+    print("\nThe murderer:", sl.get_murderer().get_name())
 
 if __name__ == "__main__":
     import sys

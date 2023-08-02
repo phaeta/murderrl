@@ -3,6 +3,7 @@
 *.pyo
 *.pyc
 *.html
+*.bak
 tags
 docs/*.rst
 docs/.build

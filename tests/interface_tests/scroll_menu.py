@@ -16,7 +16,7 @@ def main ():
 
     m = ScrollMenu("Rooms")
     keyval = ord('a')
-    for i in xrange(len(rooms)):
+    for i in range(len(rooms)):
         key  = chr(keyval)
         e = Entry(key, rooms[i].name, rooms[i].describe)
         m.add_entry(e)

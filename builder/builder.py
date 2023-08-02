@@ -18,7 +18,9 @@ Attempt to create a "manor" akin to::
                            ##++##
 
 """
-import random, copy, room
+#import random, copy, room
+import random, copy
+from . import room
 from library import shape, collection
 from library.coord import *
 from library.random_util import *
@@ -215,8 +217,8 @@ def base_builder (min_rooms=0, top_left=None, top_right=None, bottom_left=None, 
     # tr_corr = True
     # bl_corr = True
     # br_corr = True
-    print "tl: %s, tr: %s, bl: %s, br: %s" % (top_left, top_right, bottom_left, bottom_right)
-    print "tl: %s, tr: %s, bl: %s, br: %s" % (tl_corr, tr_corr, bl_corr, br_corr)
+    print("tl: %s, tr: %s, bl: %s, br: %s" % (top_left, top_right, bottom_left, bottom_right))
+    print("tl: %s, tr: %s, bl: %s, br: %s" % (tl_corr, tr_corr, bl_corr, br_corr))
     # Top row of rooms
     row1 = []
     # Corridor, then bottom row of rooms
@@ -231,7 +233,7 @@ def base_builder (min_rooms=0, top_left=None, top_right=None, bottom_left=None, 
     if bottom_height == None:
         bottom_height = random_room_height()
 
-    print "top_height: %s, bottom_height: %s" % (top_height, bottom_height)
+    print("top_height: %s, bottom_height: %s" % (top_height, bottom_height))
 
     # first rooms on either row
     height1 = top_height
@@ -259,8 +261,8 @@ def base_builder (min_rooms=0, top_left=None, top_right=None, bottom_left=None, 
         length2 += 2
     if br_corr:
         length2 += 2
-    print "Row 1:"
-    print "room 1: w=%s, length1: %s" % (top_left, length1)
+    print("Row 1:")
+    print("room 1: w=%s, length1: %s" % (top_left, length1))
     while len(row1) <= 5:
         # If we have four rooms, one in three chance of not adding any more
         # rooms.
@@ -270,13 +272,13 @@ def base_builder (min_rooms=0, top_left=None, top_right=None, bottom_left=None, 
         new_room = room.Room(width=random.choice(ROOM_WIDTH_LIST), height=top_height)
         row1.append(new_room)
         length1 += new_room.width - 1
-        print "room %s: w=%s, length1: %s" % (len(row1), new_room.width, length1)
-    print "room %s: w=%s" % (len(row1)+1, top_right)
+        print("room %s: w=%s, length1: %s" % (len(row1), new_room.width, length1))
+    print("room %s: w=%s" % (len(row1)+1, top_right))
 
     manor_width = length1
 
-    print "\nRow 2:"
-    print "room 1: w=%s, length2: %s" % (bottom_left, length2)
+    print("\nRow 2:")
+    print("room 1: w=%s, length2: %s" % (bottom_left, length2))
     while length2 < manor_width:
         dist_left = manor_width - length2 + 1
         if dist_left < 14:
@@ -289,8 +291,8 @@ def base_builder (min_rooms=0, top_left=None, top_right=None, bottom_left=None, 
         new_room = room.Room(width=new_width, height=bottom_height)
         row2.append(new_room)
         length2 += new_width - 1
-        print "room %s: w=%s, length2: %s" % (len(row2), new_width, length2)
-    print "room %s: w=%s" % (len(row2)+1, bottom_right)
+        print("room %s: w=%s, length2: %s" % (len(row2), new_width, length2))
+    print("room %s: w=%s" % (len(row2)+1, bottom_right))
 
     # last rooms on either row
     height1 = top_height
@@ -307,7 +309,7 @@ def base_builder (min_rooms=0, top_left=None, top_right=None, bottom_left=None, 
     row1.append(last)
     last = room.Room(width=bottom_right, height=height2)
     row2.append(last)
-    print "\nrow1: %s rooms, row2: %s rooms, manor width: %s" % (len(row1), len(row2), manor_width)
+    print("\nrow1: %s rooms, row2: %s rooms, manor width: %s" % (len(row1), len(row2), manor_width))
 
     # Try to get the minimum number of rooms.
     if len(row1) + len(row2) < min_rooms:
@@ -422,7 +424,7 @@ def attach_leg (base, leg, side=SIDE_LEFT, placement=PLACE_TOP, corr_offset = No
             x_offset = stop.x + start.x
     elif side == SIDE_LEFT and x_offset == None:
         x_offset = start.x
-    print "vert_offset: %s, x_offset: %s, no_vert_offset: %s" % (vert_offset, x_offset, no_vert_offset)
+    print("vert_offset: %s, x_offset: %s, no_vert_offset: %s" % (vert_offset, x_offset, no_vert_offset))
 
     if corr_offset == None:
         corr_offset = room.Room().height
@@ -486,10 +488,10 @@ def build_leg (rooms_tall=2, rooms_wide=2, width_left=12, width_right=12, make_c
         width_right = random.choice(ROOM_WIDTH_LIST)
 
     heights = []
-    for r in xrange(rooms_tall):
+    for r in range(rooms_tall):
         heights.append(7)
 
-    for column in xrange(rooms_wide):
+    for column in range(rooms_wide):
         this_col = collection.ShapeCollection()
 
         width = width_left
@@ -498,17 +500,17 @@ def build_leg (rooms_tall=2, rooms_wide=2, width_left=12, width_right=12, make_c
 
         height_list = heights[:]
         if len(heights) > 1 and one_chance_in(5):
-            indices = range(len(height_list))
+            indices = list(range(len(height_list)))
             small = random.choice(indices)
             indices.remove(small)
             large = random.choice(indices)
             height_list[small] -= 1
             height_list[large] += 2
         else:
-            large = random.choice(xrange(len(height_list)))
+            large = random.choice(range(len(height_list)))
             height_list[large] += 1
 
-        for row in xrange(rooms_tall):
+        for row in range(rooms_tall):
             new_room = room.Room(width=width,height=height_list[row]).as_shape()
             # print "new_room height: %s, this_col height: %s" % (new_room.height(), this_col.height())
             this_col = shape.underneath(new_room, this_col, offset_second=False, overlap=1, collect=True)
@@ -702,7 +704,7 @@ def build_U (base=None, min_rooms=0, rooms=2, rooms_wide=2, placement=None, oute
 
     leg_width = outer + inner + 1
     distance  = base.width() - 2 * leg_width
-    print "base width=%s, outer=%s, inner=%s, leg width=%s, distance=%s" % (base.width(), outer, inner, leg_width, base.width() - 2*leg_width)
+    print("base width=%s, outer=%s, inner=%s, leg width=%s, distance=%s" % (base.width(), outer, inner, leg_width, base.width() - 2*leg_width))
     if distance < 5 and distance != -1:
         if distance % 2 == 0 or base.width() % 2 == 0:
             if distance < 0:
@@ -713,7 +715,7 @@ def build_U (base=None, min_rooms=0, rooms=2, rooms_wide=2, placement=None, oute
 
         leg_width = outer + inner + 1
         distance  = base.width() - 2 * leg_width
-        print "base width=%s, outer=%s, inner=%s, leg width=%s, distance=%s" % (base.width(), outer, inner, leg_width, base.width() - 2*leg_width)
+        print("base width=%s, outer=%s, inner=%s, leg width=%s, distance=%s" % (base.width(), outer, inner, leg_width, base.width() - 2*leg_width))
 
     new_rooms_L = build_leg(rooms, rooms_wide, width_left=outer, width_right=inner)
     new_rooms_R = build_leg(rooms, rooms_wide, width_left=inner, width_right=outer)

@@ -1,8 +1,20 @@
 #!/usr/bin/env python
+from functools import cmp_to_key
 
 from library import feature, coord
 
 INFINITY = 10000
+
+
+def cmp(x, y):
+    if x < y:
+        return -1
+    elif x > y:
+        return 1
+    else:
+        return 0
+
+
 class Grid (object):
     """
     A generic grid of values.
@@ -17,9 +29,9 @@ class Grid (object):
         self.grid = []
         self._width  = size.x
         self._height = size.y
-        for row in xrange(size.y):
+        for row in range(size.y):
             row = []
-            for column in xrange(size.x):
+            for column in range(size.x):
                 row.append(value)
             self.grid.append(row)
 
@@ -193,5 +205,7 @@ class Pathfind (object):
             self.nlist.remove(curr)
             if self.add_neighbours(curr):
                 return curr
-            self.nlist.sort(cmp=lambda a, b: cmp(self.dgrid.__getvalue__(a), self.dgrid.__getvalue__(b)))
+            #self.nlist.sort(cmp=lambda a, b: cmp(self.dgrid.__getvalue__(a), self.dgrid.__getvalue__(b)))
+            _cmp = lambda a, b: cmp(self.dgrid.__getvalue__(a), self.dgrid.__getvalue__(b))
+            self.nlist.sort(key=cmp_to_key(_cmp))
         return None

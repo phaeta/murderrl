@@ -48,7 +48,7 @@ def draw_alibi_rooms (canvas, sl, m):
     for s in sl.suspects:
         a = s.alibi
         if a == None:
-            print "No alibi for suspect %s" % s.get_name()
+            print("No alibi for suspect %s" % s.get_name())
             alibis.append(-1)
         else:
             alibis.append(a.rid)
@@ -78,10 +78,10 @@ def draw_alibi_rooms (canvas, sl, m):
                     canvas.__setitem__(coord.Coord(centre.x+count,centre.y+1), char)
                     count += 1
 
-    print canvas, "\n"
+    print(canvas, "\n")
 
     # List the rooms and the suspects referring to them in their alibi.
-    for r in xrange(len(m.room_props)):
+    for r in range(len(m.room_props)):
         name = m.room_props[r].name
         r_str = " "
         if r < 10:
@@ -94,16 +94,16 @@ def draw_alibi_rooms (canvas, sl, m):
                 desc += " (murder room)"
             else:
                 who = []
-                for i in xrange(len(alibis)):
+                for i in range(len(alibis)):
                     if alibis[i] == r:
                         who.append(sl.get_suspect(i).get_name())
                 if len(who) > 0:
                     desc += " (Alibi for: %s)" % ', '.join(who)
-            print desc
+            print(desc)
 
     # A legend for the various symbols.
-    print "\nE = entrance hall, B = bedroom, U = utility section"
-    print "X = site of crime, other letters: suspects' alibi rooms"
+    print("\nE = entrance hall, B = bedroom, U = utility section")
+    print("X = site of crime, other letters: suspects' alibi rooms")
 
 def main (type):
     game = mainloop.Game(type)

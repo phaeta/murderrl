@@ -55,18 +55,18 @@ def main (type):
             elif rp.name.endswith("bedroom"):
                 add_symbol(canvas, centre, "B")
 
-    print canvas
+    print(canvas)
 
-    print "\n"
-    for r in xrange(len(m.room_props)):
+    print("\n")
+    for r in range(len(m.room_props)):
         name = m.room_props[r].name
         r_str = " "
         if r < 10:
             r_str += str(r)
         else:
             r_str = str(r)
-        print "%s. %s" % (r_str, name)
-    print "\nE = entrance hall, B = bedroom, U = utility section"
+        print("%s. %s" % (r_str, name))
+    print("\nE = entrance hall, B = bedroom, U = utility section")
 
 if __name__ == "__main__":
 

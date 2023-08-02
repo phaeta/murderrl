@@ -14,4 +14,4 @@ if __name__=="__main__":
 
     m = builder.builder_by_type(type)
 
-    print m.combine()
+    print(m.combine())

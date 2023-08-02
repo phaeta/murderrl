@@ -51,7 +51,7 @@ def check_name_db ():
     db_exists = db.database_exists
     for db_name in db_checks:
         if not db_exists(db_name):
-            raise DatabaseException, db_name
+            raise DatabaseException(db_name)
 
 ##################################################
 # Name generation methods

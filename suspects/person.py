@@ -4,9 +4,9 @@ Set up characters, their basic traits and relationships.
 """
 
 import random, math
-from randname import *
+from .randname import *
 from library.random_util import *
-from alibi import *
+from .alibi import *
 from interface import console, output
 from library.colour import Colours
 
@@ -196,7 +196,7 @@ class Person (object):
         :``other_idx``: The other person's index in the suspect list. *Required*.
         """
         rel = self.rel
-        num_range = xrange(len(rel))
+        num_range = range(len(rel))
         for i in num_range:
             r = rel[i]
             if r[0] == other_idx:
@@ -447,7 +447,7 @@ class SuspectList (object):
         :``p``: A object of type Person. *Required*.
         """
         s = self.suspects
-        for i in xrange(self.no_of_suspects()):
+        for i in range(self.no_of_suspects()):
             if s[i] == p:
                 return i
         return None
@@ -460,7 +460,7 @@ class SuspectList (object):
         :``idx``: An index of the suspects[] list. *Required*.
         """
         if idx < 0 or idx >= self.no_of_suspects():
-            raise IndexError, "Index %d exceeds list of size %d." % (idx, self.no_of_suspects())
+            raise IndexError("Index %d exceeds list of size %d." % (idx, self.no_of_suspects()))
         return self.suspects[idx]
 
     def get_extended_relationship (self, idx, other_idx):
@@ -474,11 +474,11 @@ class SuspectList (object):
         """
         p = self.get_suspect(idx)
         rel = p.rel
-        for i in xrange(len(rel)):
+        for i in range(len(rel)):
             r = rel[i]
             p2 = self.get_suspect(r[0])
             rel2 = p2.rel
-            for k in xrange(len(rel2)):
+            for k in range(len(rel2)):
                 r2 = rel2[k]
                 if r2[0] == other_idx:
                     if r[1] == REL_SPOUSE:
@@ -615,7 +615,7 @@ class SuspectList (object):
             tmp = "Relationships:"
 
         first = True
-        for i in xrange(len(p.rel)):
+        for i in range(len(p.rel)):
             r = p.rel[i]
             if r[0] == self.victim:
                 continue
@@ -654,13 +654,13 @@ class SuspectList (object):
         """
         p = self.get_suspect(idx)
         if p.rel:
-            print "    related to:",
-            num_range = xrange(len(p.rel))
+            print("    related to:", end=' ')
+            num_range = range(len(p.rel))
             for i in num_range:
                 r = p.rel[i]
                 if i:
-                    print "               ",
-                print "%d. %s (%s)" % (r[0]+1, self.get_suspect(r[0]).get_name(), r[1])
+                    print("               ", end=' ')
+                print("%d. %s (%s)" % (r[0]+1, self.get_suspect(r[0]).get_name(), r[1]))
 
     def describe_suspect_relationships (self, idx):
         """
@@ -668,7 +668,7 @@ class SuspectList (object):
 
         :``idx``: An index in the suspects list. *Required*.
         """
-        print self.get_suspect(idx)
+        print(self.get_suspect(idx))
         self.describe_relations(idx)
 
     def describe_suspect (self, idx):
@@ -761,7 +761,8 @@ class SuspectList (object):
         Randomly pick the victim. Staff are excluded.
         """
         idx = None
-        while idx < 0 or self.get_suspect(idx).is_servant():
+        #while idx < 0 or self.get_suspect(idx).is_servant():
+        while idx is None or self.get_suspect(idx).is_servant():
             idx = random.randint(0, self.no_of_suspects()-1)
         self.victim = idx
 
@@ -770,7 +771,8 @@ class SuspectList (object):
         Randomly pick the murderer.
         """
         idx = None
-        while idx < 0 or self.is_victim(idx):
+        #while idx < 0 or self.is_victim(idx):
+        while idx is None or self.is_victim(idx):
             idx = random.randint(0, self.no_of_suspects()-1)
         self.murderer = idx
 
@@ -900,7 +902,7 @@ class SuspectList (object):
 
                     children = random.randint(1,2)
                     sibling = None
-                    for k in xrange(children):
+                    for k in range(children):
                         sibling = self.add_child(count, sibling)
 
                         if self.no_of_suspects() >= max_persons:
@@ -1015,7 +1017,7 @@ class SuspectList (object):
         :``rooms``: A list of possible room names. *Required*.
         """
 
-        suspects = range(0, len(self.suspects))
+        suspects = list(range(0, len(self.suspects)))
         # The victim doesn't need an alibi, and the murderer is
         # handled specially.
         suspects.remove(self.victim)
@@ -1026,8 +1028,8 @@ class SuspectList (object):
         # The number of pairs depends on the total number of suspects.
         N = len(suspects)
         PAIRS = max(1, random.randint((N+1)/5, (N+1)/3))
-        print "N: %d -> min: %d, max: %d -> pairs: %d" % (N, (N+1)/5, (N+1)/3, PAIRS)
-        for i in xrange(0, PAIRS):
+        print("N: %d -> min: %d, max: %d -> pairs: %d" % (N, (N+1)/5, (N+1)/3, PAIRS))
+        for i in range(0, PAIRS):
             room = rooms.pop()
 
             idx1 = suspects[random.randint(0, len(suspects)-1)]
@@ -1039,7 +1041,7 @@ class SuspectList (object):
                 r    = p1.rel[random.randint(0, len(p1.rel)-1)]
                 idx2 = r[0]
                 p2   = self.get_suspect(idx2)
-                print "try alibi %s / %s" % (str(p1), str(p2))
+                print("try alibi %s / %s" % (str(p1), str(p2)))
                 if (idx2 != self.victim and idx2 != self.murderer
                     and not p2.alibi):
                     self.create_paired_alibi(idx1, idx2, 0, room)
@@ -1052,9 +1054,9 @@ class SuspectList (object):
                         reason = "murderer"
                     else:
                         reason = "has alibi"
-                    print "not applicable (%s) -> pick random witness" % reason
+                    print("not applicable (%s) -> pick random witness" % reason)
             else:
-                print "pick random witness for %s" % p1
+                print("pick random witness for %s" % p1)
 
             idx2 = suspects[random.randint(0, len(suspects)-1)]
             self.create_paired_alibi(idx1, idx2, 0, room)
@@ -1068,7 +1070,7 @@ class SuspectList (object):
         # The remaining suspects don't have a witness.
         # This includes the murderer.
         # TODO: Sometimes allow the murderer to lie about having a witness.
-        for i in xrange(0, len(suspects)):
+        for i in range(0, len(suspects)):
             p = suspects[i]
             self.get_suspect(p).set_alibi(0, rooms.pop())
 
@@ -1080,7 +1082,7 @@ class SuspectList (object):
         """
         self.create_alibis(rooms)
         alibis = []
-        for i in xrange(len(self.suspects)):
+        for i in range(len(self.suspects)):
             p = self.get_suspect(i)
             alibis.append(p.alibi)
 
@@ -1091,7 +1093,7 @@ class SuspectList (object):
         Returns a list of indices of suspects with a confirmed alibi.
         """
         confirmed = []
-        for i in xrange(len(self.suspects)):
+        for i in range(len(self.suspects)):
             if self.get_suspect(i).has_alibi_witness():
                 confirmed.append(i)
 
@@ -1103,10 +1105,10 @@ class SuspectList (object):
 
         :``alibis``: A list of suspect indices. *Required*.
         """
-        for i in xrange(len(alibis)):
+        for i in range(len(alibis)):
             idx = alibis[i]
             p = self.get_suspect(idx)
-            print "%s: %s" % (p.get_name(), self.get_short_alibi_description(idx))
+            print("%s: %s" % (p.get_name(), self.get_short_alibi_description(idx)))
 
     def add_hair_colours (self):
         """
@@ -1135,27 +1137,27 @@ class SuspectList (object):
 
         # confirmed and unconfirmed alibis
         confirmed      = self.get_cleared_suspects()
-        total_suspects = range(0, len(self.suspects))
+        total_suspects = list(range(0, len(self.suspects)))
         unconfirmed    = list(set(total_suspects) - set(confirmed))
         unconfirmed.remove(self.murderer)
         unconfirmed.remove(self.victim)
 
         # Give each non-cleared suspect a different hair colour than
         # the murderer's.
-        for i in xrange(len(unconfirmed)):
+        for i in range(len(unconfirmed)):
             p = unconfirmed[i]
             self.get_suspect(p).set_random_hair_colour(hair_list, m_hair)
 
         # Make sure there are at least unconfirmed/HAIR_NUM suspects
         # with the same hair colour as the murderer.
         random.shuffle(confirmed)
-        expected_hair_count = min(len(unconfirmed)/HAIR_NUM, confirmed)
-        for i in xrange(expected_hair_count):
+        expected_hair_count = min(len(unconfirmed)//HAIR_NUM, len(confirmed))
+        for i in range(expected_hair_count):
             p = confirmed[i]
             self.get_suspect(p).hair = m_hair
 
         # Give the remaining suspects a truly random hair colour.
-        for i in xrange(expected_hair_count, len(confirmed)):
+        for i in range(expected_hair_count, len(confirmed)):
             p = confirmed[i]
             self.get_suspect(p).set_random_hair_colour(hair_list)
 
@@ -1164,18 +1166,18 @@ class SuspectList (object):
         Prints the complete list of suspects and their relationships.
         """
         role = 'None'
-        for i in xrange(self.no_of_suspects()):
+        for i in range(self.no_of_suspects()):
             s = self.suspects[i]
             if s.role != role:
                 role = s.role
                 print_header(role)
             else:
-                print ""
+                print("")
             if self.is_victim(i):
-                print "***VICTIM***"
+                print("***VICTIM***")
             elif self.is_murderer(i):
-                print "***MURDERER***"
-            print "Suspect %s:" % (i+1),
+                print("***MURDERER***")
+            print("Suspect %s:" % (i+1), end=' ')
             self.describe_suspect_relationships(i)
 
     def get_id_name_tuples (self):
@@ -1188,13 +1190,13 @@ class SuspectList (object):
         to fit everyone, the most important NPCs have higher chances.
         """
         owner_list = []
-        people = range(0, self.no_of_suspects())
+        people = list(range(0, self.no_of_suspects()))
         while len(people) > 0:
             idx1  = people[0]
             people.remove(idx1)
             curr  = self.get_suspect(idx1)
             name1 = curr.get_fullname()
-            print "%s (%s, %s)" % (name1, idx1, curr.role)
+            print("%s (%s, %s)" % (name1, idx1, curr.role))
             idx2  = curr.get_relative(REL_SPOUSE)
             if idx2 == None:
                 owner_list.append((idx1, name1))
@@ -1214,7 +1216,7 @@ class SuspectList (object):
 
                 name1 = "%s%s" % (p1.title, p1.first)
                 name2 = p2.get_fullname()
-                print "-> married: %s (%s) and %s (%s)" % (name1, idx1, name2, idx2)
+                print("-> married: %s (%s) and %s (%s)" % (name1, idx1, name2, idx2))
                 owner_list.append(([idx1, idx2], [name1, name2]))
 
         return owner_list
@@ -1227,5 +1229,5 @@ def print_header (str):
     Outputs a given string and underlines it.
     """
     header = "\n%s:" % (str)
-    print header
-    print "-" * (len(header) - 1)
+    print(header)
+    print("-" * (len(header) - 1))

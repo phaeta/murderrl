@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import shape, coord
+from . import shape, coord
 from collections import namedtuple
 import copy
 
@@ -199,7 +199,7 @@ class ShapeCollection (object):
         :``column``: Which column you want to iterate over.
         """
         assert column <= self.width()
-        for y in xrange(self.height()):
+        for y in range(self.height()):
             yield CollectionCoord(self, coord.Coord(column, y))
 
     def row (self, row):
@@ -209,7 +209,7 @@ class ShapeCollection (object):
         :``row``: Which row you want to iterate over.
         """
         assert row <= self.height()
-        for x in xrange(self.width()):
+        for x in range(self.width()):
             yield CollectionCoord(self, coord.Coord(x, row))
 
     def offset (self, offset):
@@ -226,9 +226,9 @@ class ShapeCollection (object):
 
         for index, sc in enumerate(self):
             if sc.coord < coord.Coord(0, 0):
-                raise shape.ShapeError, "Shape indexed %s already had a negative offset!" % index
+                raise shape.ShapeError("Shape indexed %s already had a negative offset!" % index)
             if sc.coord+offset < coord.Coord(0, 0):
-                raise shape.ShapeError, "Adding %s to %s results in %s! Cannot perform negative offsetting." % (offset, sc.coord, sc.coord+offset)
+                raise shape.ShapeError("Adding %s to %s results in %s! Cannot perform negative offsetting." % (offset, sc.coord, sc.coord+offset))
 
             new_self.append(ShapeCoord(sc.shape, coord.Coord(sc.coord + offset)))
 

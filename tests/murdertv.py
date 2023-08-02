@@ -20,7 +20,7 @@ def murderer_flees (game, sid):
 def init_suspect_positions (game):
     sl    = game.suspect_list
     manor = game.base_manor
-    for sid in xrange(len(sl.suspects)):
+    for sid in range(len(sl.suspects)):
         if sid == sl.victim:
             continue
 
@@ -66,7 +66,7 @@ def init_suspect_positions (game):
                 pronoun = "her"
             else:
                 pronoun = "his"
-            print "%s is already in %s bedroom." % (s.get_name(), pronoun)
+            print("%s is already in %s bedroom." % (s.get_name(), pronoun))
             # Suspect in their own bedroom -> they won't be leaving for a while.
             s.duration = 100
 
@@ -76,14 +76,14 @@ def main ():
     sl   = game.suspect_list
     m    = game.base_manor
     murder_room = sl.get_victim().alibi.rid
-    print "Murder room: %s" % m.room_props[murder_room].name
+    print("Murder room: %s" % m.room_props[murder_room].name)
     body_found  = False
 
     while True:
         init_suspect_positions(game)
         game.turns = 780
         do_pause   = True
-        for i in xrange(159):
+        for i in range(159):
             game.update_screen()
             ch = screen.get(block=do_pause)
             if ch > 0 and ch <= 256:
@@ -103,15 +103,15 @@ def main ():
             game.handle_time()
 
             if not body_found:
-                for sid in xrange(len(sl.suspects)):
+                for sid in range(len(sl.suspects)):
                     if sid == sl.victim:
                         continue
                     if m.get_room_index(sl.get_suspect(sid).pos) == murder_room:
                         if sid == sl.murderer and game.turns < 800:
                             continue
-                        print "-------------------------------"
-                        print "%s discovers the body!" % sl.get_suspect(sid).get_name()
-                        print "-------------------------------"
+                        print("-------------------------------")
+                        print("%s discovers the body!" % sl.get_suspect(sid).get_name())
+                        print("-------------------------------")
                         body_found = True
                         break
 

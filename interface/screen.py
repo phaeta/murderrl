@@ -13,9 +13,9 @@ class Grid (object):
     def __init__ (self, width=0, height=0):
         self._grid = []
 
-        for row in xrange(height):
+        for row in range(height):
             row = []
-            for column in xrange(width):
+            for column in range(width):
                 row.append(None)
             self._grid.append(row)
 

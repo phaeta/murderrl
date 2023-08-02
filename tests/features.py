@@ -34,13 +34,13 @@ def main ():
     mymanor = base_manor.combine()
 
     # Debugging output
-    print "Doors:", base_manor.doors
-    print "Rooms:"
+    print("Doors:", base_manor.doors)
+    print("Rooms:")
     base_manor.print_rooms()
-    print "#Legs: ", base_manor.count_legs()
+    print("#Legs: ", base_manor.count_legs())
     for i in base_manor.legs:
-        print i
-    print "Corridors:"
+        print(i)
+    print("Corridors:")
     base_manor.print_corridors()
 
     # Draw features on canvas.

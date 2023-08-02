@@ -19,4 +19,4 @@ if __name__=="__main__":
         sys.argv.append(2)
 
 
-    print builder.build_L(rooms=int(sys.argv[0]), rooms_wide=int(sys.argv[1])).combine()
+    print(builder.build_L(rooms=int(sys.argv[0]), rooms_wide=int(sys.argv[1])).combine())

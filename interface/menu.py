@@ -3,7 +3,7 @@ import curses
 from library import coord, shape, collection, viewport
 from interface import console
 from library.colour import Colours
-from output import *
+from .output import *
 
 screen = console.select()
 
@@ -90,7 +90,7 @@ class Menu (object):
             line = 1
 
         mlist = self.mlist
-        for i in xrange(len(mlist)):
+        for i in range(len(mlist)):
             print_line(mlist[i].__str__(), coord.Coord(0, line + i), mlist[i].colour)
 
     def process_key (self, key = None):
@@ -108,7 +108,7 @@ class Menu (object):
             return False
 
         mlist = self.mlist
-        for i in xrange(len(mlist)):
+        for i in range(len(mlist)):
             if mlist[i].key_matches(chr(key)):
                 colour = mlist[i].activate()
                 if colour != None:
@@ -155,7 +155,7 @@ class ScrollMenu (Menu):
             line = 1
 
         mlist = self.mlist
-        for i in xrange(len(mlist)):
+        for i in range(len(mlist)):
             self.write_on_canvas(mlist[i].__str__(), line + i)
 
     def draw_menu (self):
@@ -207,7 +207,7 @@ class ScrollMenu (Menu):
             return False
         else:
             mlist = self.mlist
-            for i in xrange(len(mlist)):
+            for i in range(len(mlist)):
                 if mlist[i].key_matches(chr(key)):
                     colour = mlist[i].activate()
                     if colour != None:

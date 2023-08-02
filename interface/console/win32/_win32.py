@@ -198,7 +198,7 @@ def put (char, c, colour=None):
     if colour is not None:
         _SetColour(colour)
 
-    print char
+    print(char)
 
     _goto(old_c)
     _SetColour(old_colour, True)
@@ -212,8 +212,8 @@ def clear (char=None, colour=None):
     if char is None:
         char = " "
 
-    for x in xrange(termsize.width):
-        for y in xrange(termsize.height):
+    for x in range(termsize.width):
+        for y in range(termsize.height):
             put (char, coord.Coord(x, y), colour)
 
 def init ():

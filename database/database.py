@@ -421,7 +421,7 @@ def parse_spec (spec_file):
                     for key, value in zip(params, args):
                         self.__dict__[key] = value
                 elif len(kwargs) == len(params):
-                    for key, value in kwargs.iteritems():
+                    for key, value in kwargs.items():
                         self.__dict__[key] = value
                 else:
                     assert not "Didn't get the right number of arguments!"
@@ -440,7 +440,7 @@ def parse_spec (spec_file):
                 block = split_escaped_delim(delimiter, block.strip())
                 assert len(block) + len(default_params) >= len(params)
                 if len(block) < len(params):
-                    for key, default in default_params.iteritems():
+                    for key, default in default_params.items():
                         if key.isdigit():
                             assert int(key) >= len(block)
                             block.insert(int(key), default)
@@ -459,7 +459,7 @@ def parse_spec (spec_file):
                         if len(new_item) == 1:
                             new_item = split_escaped_delim(":", item, 1)
                             if len(new_item) == 1:
-                                raise DatabaseError, "Corrupted line? %s" % item
+                                raise DatabaseError("Corrupted line? %s" % item)
                         item = new_item
                         if int_conversion and item[0] in int_conversion:
                             item[1] = int(item[1])
@@ -522,7 +522,7 @@ def _do_build ():
                 obj_name = name[:-3]
                 this_folder = DatabaseFolder(obj_name)
 
-                if dir_specs.has_key(name):
+                if name in dir_specs:
                     this_folder.spec = dir_specs.pop(name)
 
                 if dirpath != data_path:
@@ -530,14 +530,14 @@ def _do_build ():
                     try:
                         top_folder = globals()[search[0]]
                     except KeyError:
-                        raise DatabaseError, "Subdirectory of a db folder without a DatabaseFolder?"
+                        raise DatabaseError("Subdirectory of a db folder without a DatabaseFolder?")
                     for p in search[1:]:
                         if p == name:
                             break
                         try:
                             top_folder = getattr(top_folder, p)
                         except AttributeError:
-                            raise DatabaseError, "Subdirectory of a db subfolder without a DatabaseFolder subfolder!"
+                            raise DatabaseError("Subdirectory of a db subfolder without a DatabaseFolder subfolder!")
                     top_folder.append(this_folder)
                 else:
                     globals()[obj_name] = this_folder

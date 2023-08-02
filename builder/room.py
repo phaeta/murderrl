@@ -97,7 +97,7 @@ class DB_Room (object):
         self.utility = want_utility
         self.debug   = debug
         if self.debug:
-            print "initialise db_room with size: %s, passage: %s, windows: %s, utility: %s" % (size, is_passage, has_windows, want_utility)
+            print("initialise db_room with size: %s, passage: %s, windows: %s, utility: %s" % (size, is_passage, has_windows, want_utility))
 
     def check_room (self, db_room):
         """
@@ -132,30 +132,30 @@ class DB_Room (object):
             # Loosen restrictions in order of importance.
             if self.windows != None:
                 if self.debug:
-                    print "loosen windows restriction"
+                    print("loosen windows restriction")
                 self.windows = None
             elif self.size != None:
                 if self.debug:
-                    print "loosen size restriction"
+                    print("loosen size restriction")
                 self.size = None
             elif self.passage:
                 if self.debug:
-                    print "loosen passage restriction"
+                    print("loosen passage restriction")
                 self.passage = False
             # Section checks override all other checks.
             elif self.utility != None:
                 if self.debug:
-                    print "loosen utility restriction"
+                    print("loosen utility restriction")
                 self.utility = None
             else:
                 if self.debug:
-                    print "get random room"
+                    print("get random room")
                 return dbr.random_pop()
 
             return self.pick_room()
 
         if self.debug:
-            print "found room: %s" % new_room
+            print("found room: %s" % new_room)
         return new_room
 
 class RoomProps (Room):
@@ -207,7 +207,7 @@ class RoomProps (Room):
         self.windows.append(dir)
 
     def add_furniture_name (self, name, allow_article=True):
-        for f in xrange(len(self.furniture)):
+        for f in range(len(self.furniture)):
             if name[:-1] in self.furniture[f]:
                 plural = pluralise(name)
                 # A bit of a hack!
@@ -242,7 +242,7 @@ class RoomProps (Room):
         if isinstance(owner_name, list):
             owner_name = join_strings(owner_name)
         room_name  = "%s's bedroom" % owner_name
-        print room_name
+        print(room_name)
         self.init_db_props(room_name, "domestic", "in", [], True)
         if isinstance(owner_id, list):
             self.owners = owner_id
@@ -265,7 +265,7 @@ class RoomProps (Room):
         if new_room:
             # print new_room.name
             features = new_room.features.split(',')
-            print "%s: %s" % (new_room.name, features)
+            print("%s: %s" % (new_room.name, features))
             self.init_db_props(new_room.name, new_room.section, new_room.prep, features, True)
 
         return new_room != None
